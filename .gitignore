@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/src/Pisa/Pisa/Bin/Debug
+/src/Pisa/Pisa/obj/Debug
+/src/Pisa/UpgradeLog.htm
+/src/Pisa/Backup
