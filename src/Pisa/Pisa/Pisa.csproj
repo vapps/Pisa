@@ -123,9 +123,8 @@
       <DependentUpon>CameraControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="DB\CategoryTable.cs" />
+    <Compile Include="DB\DBManager.cs" />
     <Compile Include="DB\PaymentTable.cs" />
-    <Compile Include="DB\PisaDataContext.cs" />
-    <Compile Include="DB\PisaDbModel.cs" />
     <Compile Include="DB\PisaTable.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

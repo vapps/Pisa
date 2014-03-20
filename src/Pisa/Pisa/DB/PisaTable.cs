@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,17 @@ using System.Threading.Tasks;
 
 namespace Pisa.DB
 {
+	public class PisaDataContext : DataContext
+	{
+		public PisaDataContext()
+			: base("Data Source = 'isoStore:/Pisa.sdf'")
+		{
+		}
+
+		public Table<PisaTable> Items;
+	}
+
+
 	[Table]
 	public class PisaTable : INotifyPropertyChanged, INotifyPropertyChanging
 	{
@@ -161,4 +173,6 @@ namespace Pisa.DB
 		}
 		#endregion INotifyPropertyChanging
 	}
+
+
 }
