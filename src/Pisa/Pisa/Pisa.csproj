@@ -129,6 +129,8 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\CategoryModel.cs" />
+    <Compile Include="Model\PaymentModel.cs" />
     <Compile Include="Model\PisaModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

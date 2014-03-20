@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Pisa.Model;
 
 namespace Pisa.DB
 {
@@ -35,6 +36,9 @@ namespace Pisa.DB
 		Dictionary<int, string> _paymentDic;
 
 
+		public List<PisaModel> Items;
+
+
 
 		private void _Init()
 		{
@@ -61,7 +65,28 @@ namespace Pisa.DB
 			_InitCategoryDic();
 			_InitPaymentDic();
 
+			Items = new List<PisaModel>();
 
+			foreach (var pisaInfo in _pisaDataContext.Items)
+			{
+				Items.Add(new PisaModel()
+					{
+						Date = DateTime.Parse(pisaInfo.Date),
+						Category = new CategoryModel()
+						{
+							ID = pisaInfo.Category,
+							Name = _categoryDic[pisaInfo.Category]
+						},
+						ImagePath = pisaInfo.ImagePath,
+						Message = pisaInfo.Message,
+						Payment = new PaymentModel()
+						{
+							ID = pisaInfo.PaymentType,
+							Name = _paymentDic[pisaInfo.PaymentType]
+						},
+						Price = pisaInfo.Price
+					});
+			}
 		}
 
 		private void _InitPaymentDic()
@@ -108,6 +133,11 @@ namespace Pisa.DB
 			{
 				Debug.Assert(false);
 			}
+		}
+
+
+		public void AddPisaModel(PisaModel model)
+		{
 		}
 	}
 }
