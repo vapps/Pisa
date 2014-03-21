@@ -1,34 +1,67 @@
+using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using Pisa.DB;
+using Pisa.Model;
 
 namespace Pisa.ViewModel
 {
-    /// <summary>
-    /// This class contains properties that the main View can data bind to.
-    /// <para>
-    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
-    /// </para>
-    /// <para>
-    /// You can also use Blend to data bind with the tool's support.
-    /// </para>
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
-    /// </summary>
-    public class MainViewModel : ViewModelBase
-    {
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
-        public MainViewModel()
-        {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
-        }
-    }
+
+	public class MainViewModel : ViewModelBase
+	{
+		#region ObservableCollection<PisaModel> Items
+		private ObservableCollection<PisaModel> _items;
+		public ObservableCollection<PisaModel> Items
+		{
+			get
+			{
+				return _items;
+			}
+			set
+			{
+				if (_items != value)
+				{
+					_items = value;
+					RaisePropertyChanged("Items");
+				}
+			}
+		}
+		#endregion ObservableCollection<PisaModel> Items
+
+
+
+		public RelayCommand<PisaModel> AddCommand { get; set; }
+		public RelayCommand LoadAllCommand { get; set; }
+
+
+		public MainViewModel()
+		{
+			if (IsInDesignMode)
+			{
+				// Code runs in Blend --> create design time data.
+			}
+			else
+			{
+				CreateCommand();
+				LoadAllItems();
+			}
+		}
+
+		private void CreateCommand()
+		{
+			AddCommand = new RelayCommand<PisaModel>(AddPisa);
+			LoadAllCommand = new RelayCommand(LoadAllItems);
+		}
+
+		public void AddPisa(PisaModel model)
+		{
+			Items.Add(model);
+			DBManager.Current.AddPisaModel(model);
+		}
+
+		public void LoadAllItems()
+		{
+			Items = new ObservableCollection<PisaModel>(DBManager.Current.GetAllItems());
+		}
+	}
 }

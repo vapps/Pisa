@@ -11,8 +11,8 @@ namespace Pisa.DB
 	public class DBManager
 	{
 		#region Current
-		private DBManager _current;
-		public DBManager Current
+		private static DBManager _current;
+		public static DBManager Current
 		{
 			get
 			{
@@ -138,6 +138,53 @@ namespace Pisa.DB
 
 		public void AddPisaModel(PisaModel model)
 		{
+			_pisaDataContext.Items.InsertOnSubmit(_GetPisaTable(model));
+		}
+
+		public List<PisaModel> GetAllItems()
+		{
+			List<PisaModel> result = new List<PisaModel>();
+
+			foreach (var item in _pisaDataContext.Items)
+			{
+				result.Add(_GetPisaModel(item));
+			}
+
+			return result;
+		}
+
+		private PisaModel _GetPisaModel(PisaTable item)
+		{
+			return new PisaModel()
+			{
+				Category = new CategoryModel()
+				{
+					ID = item.Category,
+					Name = _categoryDic[item.Category]
+				},
+				Date = DateTime.Parse(item.Date),
+				ImagePath = item.ImagePath,
+				Message = item.Message,
+				Payment = new PaymentModel()
+				{
+					ID = item.PaymentType,
+					Name = _paymentDic[item.PaymentType]
+				},
+				Price = item.Price
+			};
+		}
+
+		private PisaTable _GetPisaTable(PisaModel model)
+		{
+			return new PisaTable()
+			{
+				Category = model.Category.ID,
+				Date = model.Date.ToString(),
+				ImagePath = model.ImagePath,
+				Message = model.Message,
+				PaymentType = model.Payment.ID,
+				Price = model.Price
+			};
 		}
 	}
 }
