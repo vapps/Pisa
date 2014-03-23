@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Pisa.Model;
 
 namespace Pisa.DB
@@ -28,15 +28,66 @@ namespace Pisa.DB
 		}
 		#endregion Current
 
+
+		readonly List<string> INIT_CATEGORIES = new List<string>() { "점심", "간식", "기타" };
+		readonly List<string> INIT_PAYMENTS = new List<string>() { "카드", "현금", "통장", "핸드폰" };
+
+
 		CategoryDataContext _categoryDataContext;
 		PaymentDataContext _paymentDataContext;
 		PisaDataContext _pisaDataContext;
 
-		Dictionary<int, string> _categoryDic;
-		Dictionary<int, string> _paymentDic;
+		//Dictionary<int, string> _categoryDic;
+		//Dictionary<int, string> _paymentDic;
 
 
-		public List<PisaModel> Items;
+		public ObservableCollection<PisaModel> Items;
+		public ObservableCollection<CategoryModel> Categories;
+		public ObservableCollection<PaymentModel> Payments;
+
+
+		public void AddPisaModel(PisaModel model)
+		{
+			model.PropertyChanged += pisaModel_PropertyChanged;
+			Items.Add(model);
+		}
+
+		public void SaveAllItems()
+		{
+			if (_paymentDataContext != null)
+			{
+				_paymentDataContext.SubmitChanges();
+			}
+			else
+			{
+				Debug.Assert(false);
+			}
+
+			if (_categoryDataContext != null)
+			{
+				_categoryDataContext.SubmitChanges();
+			}
+			else
+			{
+				Debug.Assert(false);
+			}
+
+			if (_pisaDataContext != null)
+			{
+				_pisaDataContext.SubmitChanges();
+			}
+			else
+			{
+				Debug.Assert(false);
+			}
+		}
+
+
+
+
+
+
+
 
 
 
@@ -46,14 +97,19 @@ namespace Pisa.DB
 			_paymentDataContext = new PaymentDataContext();
 			_pisaDataContext = new PisaDataContext();
 
+
+			bool isFirstTimeToCreateCategory = false;
 			if (_categoryDataContext.DatabaseExists() == false)
 			{
 				_categoryDataContext.CreateDatabase();
+				isFirstTimeToCreateCategory = true;
 			}
 
+			bool isFirstTimeToCreatePayment = false;
 			if (_paymentDataContext.DatabaseExists() == false)
 			{
 				_paymentDataContext.CreateDatabase();
+				isFirstTimeToCreatePayment = true;
 			}
 
 			if (_pisaDataContext.DatabaseExists() == false)
@@ -62,71 +118,115 @@ namespace Pisa.DB
 			}
 
 
-			_InitCategoryDic();
-			_InitPaymentDic();
+			_InitCategories(isFirstTimeToCreateCategory);
+			_InitPayments(isFirstTimeToCreatePayment);
 
-			Items = new List<PisaModel>();
+			Items = new ObservableCollection<PisaModel>();
+			Items.CollectionChanged += Items_CollectionChanged;
 
 			foreach (var pisaInfo in _pisaDataContext.Items)
 			{
-				Items.Add(new PisaModel()
-					{
-						Date = DateTime.Parse(pisaInfo.Date),
-						Category = new CategoryModel()
-						{
-							ID = pisaInfo.Category,
-							Name = _categoryDic[pisaInfo.Category]
-						},
-						ImagePath = pisaInfo.ImagePath,
-						Message = pisaInfo.Message,
-						Payment = new PaymentModel()
-						{
-							ID = pisaInfo.PaymentType,
-							Name = _paymentDic[pisaInfo.PaymentType]
-						},
-						Price = pisaInfo.Price
-					});
+				CategoryModel category = Categories.FirstOrDefault(c => c.ID == pisaInfo.Category);
+				PaymentModel payment = Payments.FirstOrDefault(c => c.ID == pisaInfo.PaymentType);
+				PisaModel pisaModel = new PisaModel()
+				{
+					Date = DateTime.Parse(pisaInfo.Date),
+					Category = category,
+					ImagePath = pisaInfo.ImagePath,
+					Message = pisaInfo.Message,
+					Payment = payment,
+					Price = pisaInfo.Price
+				};
+				pisaModel.PropertyChanged += pisaModel_PropertyChanged;
+				Items.Add(pisaModel);
 			}
 		}
 
-		private void _InitPaymentDic()
+
+
+
+		void pisaModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
-			_paymentDic = new Dictionary<int, string>();
-			if (_pisaDataContext != null)
+			switch (e.PropertyName)
 			{
-				foreach (var paymentInfo in _paymentDataContext.Items)
-				{
-					if (_paymentDic.ContainsKey(paymentInfo.ID) == false)
+				case "Date":
 					{
-						_paymentDic.Add(paymentInfo.ID, paymentInfo.Name);
+
 					}
-					else
+					break;
+				default:
+					break;
+			}
+		}
+
+		void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			switch (e.Action)
+			{
+				case NotifyCollectionChangedAction.Add:
+					{
+						foreach (PisaModel addedModel in e.NewItems)
+						{
+							if (addedModel != null)
+							{
+								_pisaDataContext.Items.InsertOnSubmit(_GetPisaTable(addedModel));
+							}
+							else
+							{
+								Debug.Assert(false);
+							}
+						}
+					}
+					break;
+				case NotifyCollectionChangedAction.Remove:
+					{
+						foreach (PisaModel removedModel in e.OldItems)
+						{
+							if (removedModel != null)
+							{
+								_pisaDataContext.Items.DeleteOnSubmit(_GetPisaTable(removedModel));
+							}
+							else
+							{
+								Debug.Assert(false);
+							}
+						}
+					}
+					break;
+				case NotifyCollectionChangedAction.Move:
+				case NotifyCollectionChangedAction.Replace:
+				case NotifyCollectionChangedAction.Reset:
+				default:
 					{
 						Debug.Assert(false);
 					}
-				}
-			}
-			else
-			{
-				Debug.Assert(false);
+					break;
 			}
 		}
 
-		private void _InitCategoryDic()
+
+
+		private void _InitCategories(bool isFirtstTime)
 		{
-			_categoryDic = new Dictionary<int, string>();
+			Categories = new ObservableCollection<CategoryModel>();
 			if (_categoryDataContext != null)
 			{
+				if (isFirtstTime == true)
+				{
+					foreach (string initItem in INIT_CATEGORIES)
+					{
+						_categoryDataContext.Items.InsertOnSubmit(new CategoryTable()
+						{
+							Name = initItem
+						});
+					}
+
+					_categoryDataContext.SubmitChanges();
+				}
+
 				foreach (var categoryInfo in _categoryDataContext.Items)
 				{
-					if (_categoryDic.ContainsKey(categoryInfo.ID) == false)
-					{
-						_categoryDic.Add(categoryInfo.ID, categoryInfo.Name);
-					}
-					else
-					{
-						Debug.Assert(false);
-					}
+					Categories.Add(_GetCategoryModel(categoryInfo));
 				}
 			}
 			else
@@ -136,40 +236,71 @@ namespace Pisa.DB
 		}
 
 
-		public void AddPisaModel(PisaModel model)
+		private void _InitPayments(bool isFirstTime)
 		{
-			_pisaDataContext.Items.InsertOnSubmit(_GetPisaTable(model));
-		}
-
-		public List<PisaModel> GetAllItems()
-		{
-			List<PisaModel> result = new List<PisaModel>();
-
-			foreach (var item in _pisaDataContext.Items)
+			Payments = new ObservableCollection<PaymentModel>();
+			if (_pisaDataContext != null)
 			{
-				result.Add(_GetPisaModel(item));
-			}
+				if (isFirstTime == true)
+				{
+					foreach (string initItem in INIT_PAYMENTS)
+					{
+						_paymentDataContext.Items.InsertOnSubmit(new PaymentTable()
+							{
+								Name = initItem
+							});
+					}
+					_paymentDataContext.SubmitChanges();
+				}
 
-			return result;
+				foreach (var paymentInfo in _paymentDataContext.Items)
+				{
+					Payments.Add(_GetPaymentModel(paymentInfo));
+				}
+			}
+			else
+			{
+				Debug.Assert(false);
+			}
 		}
+
+
+		private PaymentModel _GetPaymentModel(PaymentTable paymentInfo)
+		{
+			return new PaymentModel()
+				{
+					ID = paymentInfo.ID,
+					Name = paymentInfo.Name
+				};
+		}
+
+		private CategoryModel _GetCategoryModel(CategoryTable categoryInfo)
+		{
+			return new CategoryModel()
+			{
+				ID = categoryInfo.ID,
+				Name = categoryInfo.Name
+			};
+		}
+
 
 		private PisaModel _GetPisaModel(PisaTable item)
 		{
+			CategoryModel category = Categories.FirstOrDefault(c => c.ID == item.Category);
+			PaymentModel payment = Payments.FirstOrDefault(c => c.ID == item.PaymentType);
+
+			Debug.Assert(category != null);
+			Debug.Assert(payment != null);
+
+
+
 			return new PisaModel()
 			{
-				Category = new CategoryModel()
-				{
-					ID = item.Category,
-					Name = _categoryDic[item.Category]
-				},
+				Category = category,
 				Date = DateTime.Parse(item.Date),
 				ImagePath = item.ImagePath,
 				Message = item.Message,
-				Payment = new PaymentModel()
-				{
-					ID = item.PaymentType,
-					Name = _paymentDic[item.PaymentType]
-				},
+				Payment = payment,
 				Price = item.Price
 			};
 		}
@@ -188,3 +319,4 @@ namespace Pisa.DB
 		}
 	}
 }
+

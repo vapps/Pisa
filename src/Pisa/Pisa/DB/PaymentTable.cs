@@ -12,7 +12,7 @@ namespace Pisa.DB
 	public class PaymentDataContext : DataContext
 	{
 		public PaymentDataContext() :
-			base("Data Source = 'isoSore:/Payment.sdf'")
+			base("Data Source = 'isoStore:/Payment.sdf'")
 		{
 
 		}

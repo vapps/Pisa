@@ -28,6 +28,38 @@ namespace Pisa.ViewModel
 		}
 		#endregion ObservableCollection<PisaModel> Items
 
+		#region ObservableCollection<PaymentModel> Payments
+		private ObservableCollection<PaymentModel> _Payments;
+		public ObservableCollection<PaymentModel> Payments
+		{
+			get
+			{
+				return _Payments;
+			}
+			set
+			{
+				_Payments = value;
+				RaisePropertyChanged("Payments");
+			}
+		}
+		#endregion ObservableCollection<PaymentModel> Payments
+
+		#region ObservableCollection<CategoryModel> Categories
+		private ObservableCollection<CategoryModel> _Categories;
+		public ObservableCollection<CategoryModel> Categories
+		{
+			get
+			{
+				return _Categories;
+			}
+			set
+			{
+				_Categories = value;
+				RaisePropertyChanged("Categories");
+			}
+		}
+		#endregion ObservableCollection<CategoryModel> Categories
+
 
 
 		public RelayCommand<PisaModel> AddCommand { get; set; }
@@ -53,6 +85,9 @@ namespace Pisa.ViewModel
 			LoadAllCommand = new RelayCommand(LoadAllItems);
 		}
 
+
+
+
 		public void AddPisa(PisaModel model)
 		{
 			Items.Add(model);
@@ -61,7 +96,9 @@ namespace Pisa.ViewModel
 
 		public void LoadAllItems()
 		{
-			Items = new ObservableCollection<PisaModel>(DBManager.Current.GetAllItems());
+			Items = DBManager.Current.Items;
+			Categories = DBManager.Current.Categories;
+			Payments = DBManager.Current.Payments;
 		}
 	}
 }

@@ -13,34 +13,26 @@
 	Foreground="{StaticResource PhoneForegroundBrush}"
 	SupportedOrientations="Portrait" Orientation="Portrait"
 	mc:Ignorable="d"
-	shell:SystemTray.IsVisible="True">
-	<phone:PhoneApplicationPage.ApplicationBar>
-		<shell:ApplicationBar>
-			<shell:ApplicationBarIconButton IconUri="/Assets/AppBar/appbar.add.rest.png" IsEnabled="True" Text="추가"/>
-			<shell:ApplicationBarIconButton IconUri="/Toolkit.Content/ApplicationBar.Cancel.png" IsEnabled="True" Text="취소"/>
-			<shell:ApplicationBarIconButton IconUri="/Toolkit.Content/ApplicationBar.Select.png" IsEnabled="True" Text="메뉴"/>
-		</shell:ApplicationBar>
-	</phone:PhoneApplicationPage.ApplicationBar>
-	<ScrollViewer>
-		<StackPanel x:Name="LayoutRoot" Background="Transparent">
-			<Control:CameraControl Width="400" Height="400"/>
-			<toolkit:DatePicker/>
-	   
-			<toolkit:ListPicker>
-				<toolkit:ListPickerItem Content="현금" />
-				<toolkit:ListPickerItem Content="카드" />
-				<toolkit:ListPickerItem Content="통장" />
-			</toolkit:ListPicker>
-			<toolkit:ListPicker>
-				<toolkit:ListPickerItem Content="간식" />
-				<toolkit:ListPickerItem Content="점심" />
-				<toolkit:ListPickerItem Content="생필품"/>
-			</toolkit:ListPicker>
-			<toolkit:PhoneTextBox TextWrapping="Wrap" Hint="money" InputScope="Number"/>
-			<toolkit:PhoneTextBox TextWrapping="Wrap" Hint="message"/>
-	   
-		</StackPanel>
-
-	</ScrollViewer>
-
+	shell:SystemTray.IsVisible="True"
+    xmlns:ViewModel="clr-namespace:Pisa.ViewModel">
+    <phone:PhoneApplicationPage.DataContext>
+        <ViewModel:InputViewModel/>
+    </phone:PhoneApplicationPage.DataContext>
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar>
+            <shell:ApplicationBarIconButton x:Name="AddAppBarButton" IconUri="/Assets/AppBar/appbar.add.rest.png" IsEnabled="True" Text="추가"/>
+            <shell:ApplicationBarIconButton x:Name="CancelAppBarButton" IconUri="/Toolkit.Content/ApplicationBar.Cancel.png" IsEnabled="True" Text="취소"/>
+            <shell:ApplicationBarIconButton IconUri="/Toolkit.Content/ApplicationBar.Select.png" IsEnabled="True" Text="메뉴"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+    <ScrollViewer>
+        <StackPanel x:Name="LayoutRoot" Background="Transparent">
+            <Control:CameraControl Width="300" Height="300"/>
+            <toolkit:DatePicker Value="{Binding PisaModel.Date}"/>
+            <toolkit:ListPicker ItemsSource="{Binding Main.Categories,Source={StaticResource Locator}}" DisplayMemberPath="Name" />
+            <toolkit:ListPicker ItemsSource="{Binding Main.Payments,Source={StaticResource Locator}}" DisplayMemberPath="Name" />
+            <toolkit:PhoneTextBox Text="{Binding PisaModel.Price,Mode=TwoWay}" TextWrapping="Wrap" Hint="money"  InputScope="Number"/>
+            <toolkit:PhoneTextBox Text="{Binding PisaModel.Message, Mode=TwoWay}" TextWrapping="Wrap" Hint="message"/>
+        </StackPanel>
+    </ScrollViewer>
 </phone:PhoneApplicationPage>
