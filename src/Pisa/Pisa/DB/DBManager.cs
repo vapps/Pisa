@@ -46,11 +46,11 @@ namespace Pisa.DB
 		public ObservableCollection<PaymentModel> Payments;
 
 
-		public void AddPisaModel(PisaModel model)
-		{
-			model.PropertyChanged += pisaModel_PropertyChanged;
-			Items.Add(model);
-		}
+		//public void AddPisaModel(PisaModel model)
+		//{
+		//	model.PropertyChanged += pisaModel_PropertyChanged;
+		//	Items.Add(model);
+		//}
 
 		public void SaveAllItems()
 		{
@@ -122,7 +122,7 @@ namespace Pisa.DB
 			_InitPayments(isFirstTimeToCreatePayment);
 
 			Items = new ObservableCollection<PisaModel>();
-			Items.CollectionChanged += Items_CollectionChanged;
+
 
 			foreach (var pisaInfo in _pisaDataContext.Items)
 			{
@@ -140,6 +140,9 @@ namespace Pisa.DB
 				pisaModel.PropertyChanged += pisaModel_PropertyChanged;
 				Items.Add(pisaModel);
 			}
+
+
+			Items.CollectionChanged += Items_CollectionChanged;
 		}
 
 
@@ -169,6 +172,7 @@ namespace Pisa.DB
 						{
 							if (addedModel != null)
 							{
+								addedModel.PropertyChanged += pisaModel_PropertyChanged;
 								_pisaDataContext.Items.InsertOnSubmit(_GetPisaTable(addedModel));
 							}
 							else

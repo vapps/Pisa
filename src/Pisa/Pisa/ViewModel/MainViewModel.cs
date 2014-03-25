@@ -91,7 +91,6 @@ namespace Pisa.ViewModel
 		public void AddPisa(PisaModel model)
 		{
 			Items.Add(model);
-			DBManager.Current.AddPisaModel(model);
 		}
 
 		public void LoadAllItems()
