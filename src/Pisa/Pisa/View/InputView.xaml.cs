@@ -33,6 +33,8 @@ namespace Pisa.View
 		{
 			MainViewModel mainViewModel = ServiceLocator.Current.GetInstance<MainViewModel>();
 			mainViewModel.AddCommand.Execute(ViewModel.PisaModel);
+
+			ViewModel.InitPisaModel();
 		}
 
 		protected override void OnNavigatedFrom(NavigationEventArgs e)

@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using Microsoft.Practices.ServiceLocation;
+using Pisa.DB;
 using Pisa.Model;
 
 namespace Pisa.ViewModel
@@ -27,14 +29,15 @@ namespace Pisa.ViewModel
 		}
 		#endregion PisaModel PisaModel
 
-		public InputViewModel()
+
+		public void InitPisaModel()
 		{
-			MainViewModel mainViewMode = ServiceLocator.Current.GetInstance<MainViewModel>();
+			MainViewModel mainViewModel = ServiceLocator.Current.GetInstance<MainViewModel>();
 			PisaModel = new PisaModel()
 			{
 				Date = DateTime.Now,
-				Category = mainViewMode.Categories[0],
-				Payment = mainViewMode.Payments[0]
+				Category = mainViewModel.Categories[0],
+				Payment = mainViewModel.Payments[0]
 			};
 		}
 	}

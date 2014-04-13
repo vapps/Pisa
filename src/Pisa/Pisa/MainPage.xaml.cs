@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
+using Pisa.DB;
 
 namespace Pisa
 {
@@ -19,6 +20,12 @@ namespace Pisa
 		public MainPage()
 		{
 			InitializeComponent();
+			ClearButton.Click += ClearButton_Click;
+		}
+
+		void ClearButton_Click(object sender, RoutedEventArgs e)
+		{
+			DBManager.Current.DeleteAllItems();
 		}
 	}
 }

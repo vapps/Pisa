@@ -149,8 +149,6 @@ namespace Pisa.DB
 		}
 		#endregion string ImagePath
 
-
-
 		#region ▶ INotifyPropertyChanged
 		public event PropertyChangedEventHandler PropertyChanged;
 		protected virtual void OnPropertyChanged(string propertyName)

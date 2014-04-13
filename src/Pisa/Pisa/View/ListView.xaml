@@ -16,41 +16,15 @@
 	<phone:PhoneApplicationPage.Resources>
 		<DataTemplate x:Key="DataTemplate1">
 			<Grid>
-				<Grid.RowDefinitions>
-					<RowDefinition/>
-					<RowDefinition/>
-				</Grid.RowDefinitions>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto"/>
-					<ColumnDefinition/>
-				</Grid.ColumnDefinitions>
-				<Image Grid.RowSpan="2"  Height="100" VerticalAlignment="Top" Width="100" HorizontalAlignment="Left"/>
-				<TextBlock HorizontalAlignment="Left" Grid.Column="1" TextWrapping="Wrap" Text="{Binding Message}" VerticalAlignment="Center"/>
-				<TextBlock HorizontalAlignment="Left" Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" Text="{Binding Price}" VerticalAlignment="Center"/>
+				<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Message}" VerticalAlignment="Top"/>
 			</Grid>
 		</DataTemplate>
 	</phone:PhoneApplicationPage.Resources>
     <phone:PhoneApplicationPage.DataContext>
         <ViewModel:ListViewModel/>
     </phone:PhoneApplicationPage.DataContext>
-
-    <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-        </StackPanel>
-
-        <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <ListBox ItemsSource="{Binding Items}" ItemTemplate="{StaticResource DataTemplate1}"/>
-        </Grid>
+    <Grid>
+        <phone:LongListSelector ItemsSource="{Binding Main.Items, Source={StaticResource Locator}}" 
+                                ItemTemplate="{StaticResource DataTemplate1}" />
     </Grid>
-
 </phone:PhoneApplicationPage>

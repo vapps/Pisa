@@ -14,14 +14,14 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="True">
 
-	<StackPanel x:Name="LayoutRoot" Background="Transparent">
-		<Button Content="Input View">
-			<i:Interaction.Triggers>
-				<i:EventTrigger EventName="Click">
-					<ec:NavigateToPageAction TargetPage="/View/InputView.xaml"/>
-				</i:EventTrigger>
-			</i:Interaction.Triggers>
-		</Button>
+    <StackPanel x:Name="LayoutRoot" Background="Transparent">
+        <Button Content="Input View">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Click">
+                    <ec:NavigateToPageAction TargetPage="/View/InputView.xaml"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
         <Button Content="List View">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Click">
@@ -29,6 +29,7 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>
+        <Button Content="Clear Data" x:Name="ClearButton"/>
     </StackPanel>
- 
+
 </phone:PhoneApplicationPage>

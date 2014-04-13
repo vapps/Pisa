@@ -37,20 +37,11 @@ namespace Pisa.DB
 		PaymentDataContext _paymentDataContext;
 		PisaDataContext _pisaDataContext;
 
-		//Dictionary<int, string> _categoryDic;
-		//Dictionary<int, string> _paymentDic;
-
 
 		public ObservableCollection<PisaModel> Items;
 		public ObservableCollection<CategoryModel> Categories;
 		public ObservableCollection<PaymentModel> Payments;
 
-
-		//public void AddPisaModel(PisaModel model)
-		//{
-		//	model.PropertyChanged += pisaModel_PropertyChanged;
-		//	Items.Add(model);
-		//}
 
 		public void SaveAllItems()
 		{
@@ -81,8 +72,6 @@ namespace Pisa.DB
 				Debug.Assert(false);
 			}
 		}
-
-
 
 
 
@@ -146,8 +135,6 @@ namespace Pisa.DB
 		}
 
 
-
-
 		void pisaModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
 			switch (e.PropertyName)
@@ -208,9 +195,7 @@ namespace Pisa.DB
 			}
 		}
 
-
-
-		private void _InitCategories(bool isFirtstTime)
+		void _InitCategories(bool isFirtstTime)
 		{
 			Categories = new ObservableCollection<CategoryModel>();
 			if (_categoryDataContext != null)
@@ -240,7 +225,7 @@ namespace Pisa.DB
 		}
 
 
-		private void _InitPayments(bool isFirstTime)
+		void _InitPayments(bool isFirstTime)
 		{
 			Payments = new ObservableCollection<PaymentModel>();
 			if (_pisaDataContext != null)
@@ -269,7 +254,7 @@ namespace Pisa.DB
 		}
 
 
-		private PaymentModel _GetPaymentModel(PaymentTable paymentInfo)
+		PaymentModel _GetPaymentModel(PaymentTable paymentInfo)
 		{
 			return new PaymentModel()
 				{
@@ -278,7 +263,7 @@ namespace Pisa.DB
 				};
 		}
 
-		private CategoryModel _GetCategoryModel(CategoryTable categoryInfo)
+		CategoryModel _GetCategoryModel(CategoryTable categoryInfo)
 		{
 			return new CategoryModel()
 			{
@@ -288,7 +273,7 @@ namespace Pisa.DB
 		}
 
 
-		private PisaModel _GetPisaModel(PisaTable item)
+		PisaModel _GetPisaModel(PisaTable item)
 		{
 			CategoryModel category = Categories.FirstOrDefault(c => c.ID == item.Category);
 			PaymentModel payment = Payments.FirstOrDefault(c => c.ID == item.PaymentType);
@@ -309,7 +294,7 @@ namespace Pisa.DB
 			};
 		}
 
-		private PisaTable _GetPisaTable(PisaModel model)
+		PisaTable _GetPisaTable(PisaModel model)
 		{
 			return new PisaTable()
 			{
@@ -320,6 +305,12 @@ namespace Pisa.DB
 				PaymentType = model.Payment.ID,
 				Price = model.Price
 			};
+		}
+
+		internal void DeleteAllItems()
+		{
+			_pisaDataContext.Items.DeleteAllOnSubmit(_pisaDataContext.Items);
+			_pisaDataContext.SubmitChanges();
 		}
 	}
 }
