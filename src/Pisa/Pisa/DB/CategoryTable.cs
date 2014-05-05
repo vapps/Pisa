@@ -59,7 +59,6 @@ namespace Pisa.DB
 		}
 		#endregion int ID
 
-
 		#region INotifyPropertyChanged
 		public event PropertyChangedEventHandler PropertyChanged;
 		protected virtual void OnPropertyChanged(string propertyName)

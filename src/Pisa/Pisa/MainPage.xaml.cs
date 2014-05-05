@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
+using Microsoft.Practices.ServiceLocation;
 using Pisa.DB;
 
 namespace Pisa
@@ -25,7 +26,7 @@ namespace Pisa
 
 		void ClearButton_Click(object sender, RoutedEventArgs e)
 		{
-			DBManager.Current.DeleteAllItems();
+			ServiceLocator.Current.GetInstance<DBManager>().DeleteAllItems();
 		}
 	}
 }

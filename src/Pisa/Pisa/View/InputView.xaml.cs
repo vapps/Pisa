@@ -40,7 +40,7 @@ namespace Pisa.View
 		protected override void OnNavigatedFrom(NavigationEventArgs e)
 		{
 			base.OnNavigatedFrom(e);
-			DBManager.Current.SaveAllItems();
+			ServiceLocator.Current.GetInstance<DBManager>().SaveAllItems();
 		}
 	}
 }

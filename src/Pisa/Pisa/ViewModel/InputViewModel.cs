@@ -32,12 +32,12 @@ namespace Pisa.ViewModel
 
 		public void InitPisaModel()
 		{
-			MainViewModel mainViewModel = ServiceLocator.Current.GetInstance<MainViewModel>();
 			PisaModel = new PisaModel()
 			{
 				Date = DateTime.Now,
-				Category = mainViewModel.Categories[0],
-				Payment = mainViewModel.Payments[0]
+
+				Category = ServiceLocator.Current.GetInstance<DBManager>().Categories[0],
+				Payment = ServiceLocator.Current.GetInstance<DBManager>().Payments[0]
 			};
 		}
 	}

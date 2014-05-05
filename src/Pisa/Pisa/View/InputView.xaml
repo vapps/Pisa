@@ -27,8 +27,8 @@
     </phone:PhoneApplicationPage.ApplicationBar>
     <ScrollViewer>
         <StackPanel x:Name="LayoutRoot" Background="Transparent">
-            <Control:CameraControl Width="300" Height="300"/>
-            <toolkit:DatePicker Value="{Binding PisaModel.Date}"/>
+            <Control:CameraControl Width="480" Height="480"/>
+            <toolkit:DatePicker Value="{Binding PisaModel.Date, Mode=TwoWay}"/>
             <toolkit:ListPicker ItemsSource="{Binding Main.Categories,Source={StaticResource Locator}}" DisplayMemberPath="Name" />
             <toolkit:ListPicker ItemsSource="{Binding Main.Payments,Source={StaticResource Locator}}" DisplayMemberPath="Name" />
             <toolkit:PhoneTextBox Text="{Binding PisaModel.Price,Mode=TwoWay}" TextWrapping="Wrap" Hint="money"  InputScope="Number"/>

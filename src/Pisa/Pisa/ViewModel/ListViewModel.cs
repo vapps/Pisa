@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
+using Microsoft.Practices.ServiceLocation;
 using Pisa.DB;
 using Pisa.Model;
 
@@ -30,7 +31,7 @@ namespace Pisa.ViewModel
 
 		public ListViewModel()
 		{
-			Items = DBManager.Current.Items;
+			Items = ServiceLocator.Current.GetInstance<DBManager>().Items;
 		}
 	}
 }

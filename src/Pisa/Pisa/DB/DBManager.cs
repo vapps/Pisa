@@ -10,25 +10,6 @@ namespace Pisa.DB
 {
 	public class DBManager
 	{
-		#region Current
-		private static DBManager _current;
-		public static DBManager Current
-		{
-			get
-			{
-				if (_current == null)
-					_current = new DBManager();
-
-				return _current;
-			}
-		}
-		DBManager()
-		{
-			_Init();
-		}
-		#endregion Current
-
-
 		readonly List<string> INIT_CATEGORIES = new List<string>() { "점심", "간식", "기타" };
 		readonly List<string> INIT_PAYMENTS = new List<string>() { "카드", "현금", "통장", "핸드폰" };
 
@@ -109,7 +90,11 @@ namespace Pisa.DB
 
 			_InitCategories(isFirstTimeToCreateCategory);
 			_InitPayments(isFirstTimeToCreatePayment);
+			
+		}
 
+		public void LoadAllItems()
+		{
 			Items = new ObservableCollection<PisaModel>();
 
 
@@ -126,6 +111,7 @@ namespace Pisa.DB
 					Payment = payment,
 					Price = pisaInfo.Price
 				};
+
 				pisaModel.PropertyChanged += pisaModel_PropertyChanged;
 				Items.Add(pisaModel);
 			}
@@ -175,6 +161,7 @@ namespace Pisa.DB
 						{
 							if (removedModel != null)
 							{
+								removedModel.PropertyChanged -= pisaModel_PropertyChanged;
 								_pisaDataContext.Items.DeleteOnSubmit(_GetPisaTable(removedModel));
 							}
 							else

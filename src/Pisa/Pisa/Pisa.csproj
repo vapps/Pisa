@@ -124,6 +124,7 @@
     </Compile>
     <Compile Include="DB\CategoryTable.cs" />
     <Compile Include="DB\DBManager.cs" />
+    <Compile Include="DB\DBManager2.cs" />
     <Compile Include="DB\PaymentTable.cs" />
     <Compile Include="DB\PisaTable.cs" />
     <Compile Include="MainPage.xaml.cs">
