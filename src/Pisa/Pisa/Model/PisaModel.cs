@@ -10,8 +10,8 @@ namespace Pisa.Model
 	public class PisaModel : INotifyPropertyChanged
 	{
 		#region DateTime Date
-		private DateTime _Date;
-		public DateTime Date
+		private DateTime? _Date;
+		public DateTime? Date
 		{
 			get
 			{
@@ -25,9 +25,9 @@ namespace Pisa.Model
 		}
 		#endregion DateTime Date
 
-		#region int Price
-		private int _Price;
-		public int Price
+		#region string Price
+		private string _Price;
+		public string Price
 		{
 			get
 			{
@@ -39,7 +39,7 @@ namespace Pisa.Model
 				OnPropertyChanged("Price");
 			}
 		}
-		#endregion int Price
+		#endregion string Price
 
 		#region CategoryModel Category
 		private CategoryModel _Category;

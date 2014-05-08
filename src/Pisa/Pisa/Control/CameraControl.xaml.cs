@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ using Microsoft.Devices;
 
 namespace Pisa.Control
 {
-	public partial class CameraControl : UserControl
+	public partial class CameraControl : UserControl, IDisposable
 	{
 		PhotoCamera _camera;
 		public CameraControl()
@@ -21,6 +22,7 @@ namespace Pisa.Control
 			LinkEvents();
 			InitCamera();
 		}
+
 
 		private void LinkEvents()
 		{
@@ -82,6 +84,42 @@ namespace Pisa.Control
 			{
 				//TODO : 카메라 초기화 실패시에 재시도 처리가 필요함.
 			}
+		}
+
+
+		public string SaveAndGetFilePath()
+		{
+			string path = DateTime.Now.GetHashCode().ToString();
+			WriteableBitmap wb = new WriteableBitmap(ViewportRectangle, null);
+
+			try
+			{
+				using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
+				{
+					using (IsolatedStorageFileStream isfStream = new IsolatedStorageFileStream(path, FileMode.Create, isf))
+					{
+						wb.SaveJpeg(isfStream, (int)ViewportRectangle.ActualWidth, (int)ViewportRectangle.ActualHeight, 0, 100);
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				Debug.Assert(false, ex.Message);
+				path = string.Empty;
+			}
+
+			return path;
+		}
+
+		public void Dispose()
+		{
+			_camera.Dispose();
+			_camera = null;
+		}
+
+		~CameraControl()
+		{
+			Dispose();
 		}
 	}
 }

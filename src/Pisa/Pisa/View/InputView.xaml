@@ -15,24 +15,30 @@
 	mc:Ignorable="d"
 	shell:SystemTray.IsVisible="True"
     xmlns:ViewModel="clr-namespace:Pisa.ViewModel">
-    <phone:PhoneApplicationPage.DataContext>
-        <ViewModel:InputViewModel/>
-    </phone:PhoneApplicationPage.DataContext>
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar>
-            <shell:ApplicationBarIconButton x:Name="AddAppBarButton" IconUri="/Assets/AppBar/appbar.add.rest.png" IsEnabled="True" Text="추가"/>
-            <shell:ApplicationBarIconButton x:Name="CancelAppBarButton" IconUri="/Toolkit.Content/ApplicationBar.Cancel.png" IsEnabled="True" Text="취소"/>
-            <shell:ApplicationBarIconButton IconUri="/Toolkit.Content/ApplicationBar.Select.png" IsEnabled="True" Text="메뉴"/>
-        </shell:ApplicationBar>
+        <shell:ApplicationBar/>
     </phone:PhoneApplicationPage.ApplicationBar>
     <ScrollViewer>
         <StackPanel x:Name="LayoutRoot" Background="Transparent">
-            <Control:CameraControl Width="480" Height="480"/>
-            <toolkit:DatePicker Value="{Binding PisaModel.Date, Mode=TwoWay}"/>
-            <toolkit:ListPicker ItemsSource="{Binding Main.Categories,Source={StaticResource Locator}}" DisplayMemberPath="Name" />
-            <toolkit:ListPicker ItemsSource="{Binding Main.Payments,Source={StaticResource Locator}}" DisplayMemberPath="Name" />
-            <toolkit:PhoneTextBox Text="{Binding PisaModel.Price,Mode=TwoWay}" TextWrapping="Wrap" Hint="money"  InputScope="Number"/>
-            <toolkit:PhoneTextBox Text="{Binding PisaModel.Message, Mode=TwoWay}" TextWrapping="Wrap" Hint="message"/>
+            <Control:CameraControl Width="400" Height="400" x:Name="CameraControl"/>
+            <toolkit:DatePicker Value="{Binding Main.CurrentModel.Date, Mode=TwoWay ,Source={StaticResource Locator}}"/>
+            <toolkit:ListPicker ItemsSource="{Binding Main.Categories,Source={StaticResource Locator}}" DisplayMemberPath="Name" 
+                                 SelectedItem="{Binding Main.CurrentModel.Category,Source={StaticResource Locator} ,Mode=TwoWay}"/>
+            <toolkit:ListPicker ItemsSource="{Binding Main.Payments,Source={StaticResource Locator}}" DisplayMemberPath="Name" 
+                                SelectedItem="{Binding Main.CurrentModel.Payment,Source={StaticResource Locator} ,Mode=TwoWay}"/>
+            <toolkit:PhoneTextBox x:Name="PriceTextBox" 
+                                  Text="{Binding Main.CurrentModel.Price, Mode=TwoWay,Source={StaticResource Locator}}" 
+                                  TextWrapping="Wrap" 
+                                  Hint="money"  
+                                  InputScope="Number" 
+                                  GotFocus="PriceTextBox_GotFocus"
+                                  KeyUp="PriceTextBox_KeyUp"/>
+            <toolkit:PhoneTextBox x:Name="MessageTextBox" 
+                                  Text="{Binding Main.CurrentModel.Message, Mode=TwoWay ,Source={StaticResource Locator}}" 
+                                  TextWrapping="Wrap" 
+                                  Hint="message"
+                                  GotFocus="MessageTextBox_GotFocus"
+                                  KeyUp="MessageTextBox_KeyUp"/>
         </StackPanel>
     </ScrollViewer>
 </phone:PhoneApplicationPage>

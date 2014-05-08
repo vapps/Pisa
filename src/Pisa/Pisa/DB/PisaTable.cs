@@ -41,10 +41,10 @@ namespace Pisa.DB
 		}
 		#endregion int ID
 
-		#region int Price
-		private int _Price;
+		#region string Price
+		private string _Price;
 		[Column]
-		public int Price
+		public string Price
 		{
 			get
 			{
@@ -57,7 +57,7 @@ namespace Pisa.DB
 				OnPropertyChanged("Price");
 			}
 		}
-		#endregion int Price
+		#endregion string Price
 
 		#region string Date
 		private string _Date;

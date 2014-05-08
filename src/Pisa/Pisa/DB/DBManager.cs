@@ -24,6 +24,19 @@ namespace Pisa.DB
 		public ObservableCollection<PaymentModel> Payments;
 
 
+		public DBManager()
+		{
+			_Init();
+		}
+
+
+
+
+
+
+
+
+
 		public void SaveAllItems()
 		{
 			if (_paymentDataContext != null)
@@ -61,6 +74,7 @@ namespace Pisa.DB
 
 
 
+
 		private void _Init()
 		{
 			_categoryDataContext = new CategoryDataContext();
@@ -90,7 +104,7 @@ namespace Pisa.DB
 
 			_InitCategories(isFirstTimeToCreateCategory);
 			_InitPayments(isFirstTimeToCreatePayment);
-			
+
 		}
 
 		public void LoadAllItems()
