@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ViewModel="clr-namespace:Pisa.ViewModel" xmlns:Control="clr-namespace:Pisa.Control"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     x:Class="Pisa.View.ListView"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
@@ -38,7 +39,23 @@
 		<StaticResource ResourceKey="PhoneForegroundBrush"/>
 	</phone:PhoneApplicationPage.Foreground>
 	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<toolkit:DatePicker ValueStringFormat="{}{0:yyyy-MM}"/>
+		<Grid Grid.Row="1">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Button x:Name="DateButton" Content="[번]날짜"/>
+			<Button x:Name="CategoryButton" Content="[번]카테고리" Grid.Column="1"/>
+			<Button x:Name="PaymentButton" Content="[번]현금/카드" Grid.Column="2"/>
+		</Grid>
 		<phone:LongListSelector ItemsSource="{Binding Main.Items, Source={StaticResource Locator}}" 
-			ItemTemplate="{StaticResource DataTemplate1}" />
+			ItemTemplate="{StaticResource DataTemplate1}" Grid.Row="2" />
 	</Grid>
 </phone:PhoneApplicationPage>

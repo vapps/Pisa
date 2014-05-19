@@ -33,9 +33,23 @@ namespace Pisa.View
 			};
 			listButton.Click += listButton_Click;
 
+			ApplicationBarIconButton settingButton = new ApplicationBarIconButton()
+			{
+				Text = "[번]설정",
+				IconUri = new Uri("/Assets/AppBar/appbar.add.rest.png", UriKind.RelativeOrAbsolute)
+			};
+			settingButton.Click += settingButton_Click;
 
 			this.ApplicationBar.Buttons.Add(addButton);
 			this.ApplicationBar.Buttons.Add(listButton);
+			this.ApplicationBar.Buttons.Add(settingButton);
+		}
+
+
+
+		void settingButton_Click(object sender, EventArgs e)
+		{
+			NavigationService.Navigate(new Uri("/Pisa;component/View/SettingView.xaml", UriKind.RelativeOrAbsolute));
 		}
 
 		void listButton_Click(object sender, EventArgs e)

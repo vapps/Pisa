@@ -145,6 +145,18 @@
     <Compile Include="View\ListView.xaml.cs">
       <DependentUpon>ListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\SettingView.xaml.cs">
+      <DependentUpon>SettingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Setting\AlarmSettingView.xaml.cs">
+      <DependentUpon>AlarmSettingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Setting\PasswordSettingView.xaml.cs">
+      <DependentUpon>PasswordSettingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Setting\StyleView.xaml.cs">
+      <DependentUpon>StyleView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -176,6 +188,22 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\ListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SettingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Setting\AlarmSettingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Setting\PasswordSettingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Setting\StyleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

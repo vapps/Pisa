@@ -90,10 +90,10 @@ namespace Pisa.Control
 		public string SaveAndGetFilePath()
 		{
 			string path = DateTime.Now.GetHashCode().ToString();
-			WriteableBitmap wb = new WriteableBitmap(ViewportRectangle, null);
-
+			
 			try
 			{
+				WriteableBitmap wb = new WriteableBitmap(ViewportRectangle, null);
 				using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
 				{
 					using (IsolatedStorageFileStream isfStream = new IsolatedStorageFileStream(path, FileMode.Create, isf))
