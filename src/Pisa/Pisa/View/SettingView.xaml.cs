@@ -51,5 +51,11 @@ namespace Pisa.View
 		{
 			NavigationService.Navigate(new Uri("/Pisa;component/View/Setting/StyleView.xaml", UriKind.RelativeOrAbsolute));
 		}
+
+		protected override void OnNavigatedTo(NavigationEventArgs e)
+		{
+			base.OnNavigatedTo(e);
+			this.UpdateLayout();
+		}
 	}
 }

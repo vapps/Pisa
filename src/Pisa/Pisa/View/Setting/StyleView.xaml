@@ -29,7 +29,13 @@
 
         <!--ContentPanel - place additional content here-->
 		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-			<phone:LongListSelector/>
+			<ScrollViewer>
+				<StackPanel>
+					<Button x:Name="RedButton" Content="Red" Foreground="Red"/>
+					<Button x:Name="BlueButton" Content="Blue" Foreground="#FF3C4DFF"/>
+					<Button x:Name="YellowButton" Content="Yellow" Foreground="#FFFFF75D"/>
+				</StackPanel>
+			</ScrollViewer>
 		</Grid>
 	</Grid>
 

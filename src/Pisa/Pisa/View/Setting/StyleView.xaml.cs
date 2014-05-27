@@ -16,11 +16,37 @@ namespace Pisa.View.Setting
 		public StyleView()
 		{
 			InitializeComponent();
+			LinkEvents();
+		}
+
+		private void LinkEvents()
+		{
+			RedButton.Click += RedButton_Click;
+			BlueButton.Click += BlueButton_Click;
+			YellowButton.Click += YellowButton_Click;
+		}
+
+		void YellowButton_Click(object sender, RoutedEventArgs e)
+		{
+			StyleManager.Current.ChangedColor(PisaStyle.Yellow);
+			this.NavigationService.GoBack();
+		}
+
+		void BlueButton_Click(object sender, RoutedEventArgs e)
+		{
+			StyleManager.Current.ChangedColor(PisaStyle.Blue);
+			this.NavigationService.GoBack();
+		}
+
+		void RedButton_Click(object sender, RoutedEventArgs e)
+		{
+			StyleManager.Current.ChangedColor(PisaStyle.Red);
+			this.NavigationService.GoBack();
 		}
 	}
 
 	public class StyleViewModel : ViewModelBase
 	{
-		
+
 	}
 }
